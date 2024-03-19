@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-07 16:53+0000\n"
+"POT-Creation-Date: 2024-03-19 17:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,13 +18,21 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: middleware.py:67
+#: middleware.py:76
 msgid "Update your password to get started."
 msgstr "Atualize sua senha para começar."
 
-#: middleware.py:69
+#: middleware.py:78
 msgid "Your password is at least {} days old and needs to be updated."
 msgstr "Sua senha tem pelo menos {} dias e precisa ser atualizada."
+
+#: models.py:26
+msgid "Passwords expiration days"
+msgstr "Dias de expiração das senhas"
+
+#: models.py:29
+msgid "Users that you want to ignore the rule"
+msgstr "Usuário para ignorar validações de senhas"
 
 #: validators/custom_password_validator.py:50
 msgid "Password must contain at least {} characters."

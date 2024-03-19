@@ -1,3 +1,8 @@
-# from django.contrib import admin
+from django.contrib import admin
+from django_better_passwords.models import Configuration
 
-# Register your models here.
+
+@admin.register(Configuration)
+class ConfigurationAdmin(admin.ModelAdmin):
+    list_display = ("expiration_day",)
+    autocomplete_fields = ("users",)

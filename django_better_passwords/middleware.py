@@ -8,12 +8,18 @@ from django.urls import (
 from django.utils import timezone
 from django.utils.translation import gettext as _
 
+from django_better_passwords.models import Configuration
+
 
 class PasswordExpirationMiddleware:
     def __init__(self, get_response):
+        self.configuration = Configuration.objects.first()
         self.get_response = get_response
+        days = self.configuration.expiration_day \
+            if self.configuration \
+            else getattr(settings, "DBP_PASSWORD_EXPIRATION_DAYS", 60)
         self.expiration_days = timezone.timedelta(
-            days=getattr(settings, "DBP_PASSWORD_EXPIRATION_DAYS", 60)
+            days=days
         )
 
     def __call__(self, request):
@@ -23,7 +29,10 @@ class PasswordExpirationMiddleware:
         resolver_match = resolve(request.path)
         user = request.user
 
-        if user.is_authenticated:
+        user_ignore = self.configuration.users.filter(pk=user.pk) \
+            if self.configuration else None
+
+        if user.is_authenticated and not user_ignore:
             record = user.password_records
 
             if ((timezone.now() - record.date) >= self.expiration_days) or (
