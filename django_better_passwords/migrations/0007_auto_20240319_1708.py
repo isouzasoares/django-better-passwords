@@ -15,12 +15,12 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='passwordrecord',
             name='id',
-            field=models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
+            field=models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID'),
         ),
         migrations.CreateModel(
             name='Configuration',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('expiration_day', models.IntegerField(default=60, verbose_name='Expiration days')),
                 ('users', models.ManyToManyField(to=settings.AUTH_USER_MODEL, verbose_name='Users that you want to ignore the rule')),
             ],

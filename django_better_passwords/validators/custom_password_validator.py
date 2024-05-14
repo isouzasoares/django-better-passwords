@@ -23,11 +23,11 @@ class CustomPasswordValidator:
 
     def __init__(
         self,
-        min_length: int = 6,
-        max_length: int = 30,
-        required_characters: str = "",
-        required_characters_count: int = 1,
-        forbidden_characters: str = "",
+        min_length=6,
+        max_length=30,
+        required_characters="",
+        required_characters_count=1,
+        forbidden_characters="",
     ):
         self.min_length = min_length
         self.max_length = max_length
@@ -44,19 +44,19 @@ class CustomPasswordValidator:
         self._validate_upper_case_letter(password=password)
         self._validate_lower_case_letter(password=password)
 
-    def _validate_min_length(self, password: str):
+    def _validate_min_length(self, password):
         if len(password) < self.min_length:
             raise ValidationError(
                 _("Password must contain at least {} characters.").format(self.min_length)
             )
 
-    def _validate_max_length(self, password: str):
+    def _validate_max_length(self, password):
         if len(password) > self.max_length:
             raise ValidationError(
                 _("Password cannot be longer than {} characters.").format(self.max_length)
             )
 
-    def _validate_required_characters(self, password: str):
+    def _validate_required_characters(self, password):
         if self.required_characters and self.required_characters_count > 0:
             count = sum(1 for char in password if char in self.required_characters)
 
@@ -67,7 +67,7 @@ class CustomPasswordValidator:
                     ).format(self.required_characters_count, self.required_characters)
                 )
 
-    def _validate_forbidden_characters(self, password: str):
+    def _validate_forbidden_characters(self, password):
         if self.forbidden_characters and any(
             char in self.forbidden_characters for char in password
         ):
@@ -75,15 +75,15 @@ class CustomPasswordValidator:
                 _("Password cannot contain the following characters: {}.").format(self.forbidden_characters)
             )
 
-    def _validate_digits(self, password: str):
+    def _validate_digits(self, password):
         if not any(char.isdigit() for char in password):
             raise ValidationError(_("Password must contain at least one digit."))
 
-    def _validate_upper_case_letter(self, password: str):
+    def _validate_upper_case_letter(self, password):
         if not any(char.isupper() for char in password):
             raise ValidationError(_("Password must contain at least one upper case letter."))
 
-    def _validate_lower_case_letter(self, password: str):
+    def _validate_lower_case_letter(self, password):
         if not any(char.islower() for char in password):
             raise ValidationError(_("Password must contain at least one lower case letter."))
 

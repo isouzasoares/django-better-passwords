@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.urls import (
+from django.core.urlresolvers import (
     resolve,
     reverse,
 )
@@ -11,10 +11,9 @@ from django.utils.translation import gettext as _
 from django_better_passwords.models import Configuration
 
 
-class PasswordExpirationMiddleware:
-    def __init__(self, get_response):
+class PasswordExpirationMiddleware(object):
+    def __init__(self, **kwargs):
         self.configuration = Configuration.objects.first()
-        self.get_response = get_response
         days = self.configuration.expiration_day \
             if self.configuration \
             else getattr(settings, "DBP_PASSWORD_EXPIRATION_DAYS", 60)
@@ -22,7 +21,7 @@ class PasswordExpirationMiddleware:
             days=days
         )
 
-    def __call__(self, request):
+    def process_response(self, request, response):
         # Code to be executed for each request before
         # the view (and later middleware) are called.
 
@@ -32,7 +31,7 @@ class PasswordExpirationMiddleware:
         user_ignore = self.configuration.users.filter(pk=user.pk) \
             if self.configuration else None
 
-        if user.is_authenticated and not user_ignore:
+        if user.is_authenticated and not user_ignore and not user.is_anonymous():
             record = user.password_records
 
             if ((timezone.now() - record.date) >= self.expiration_days) or (
@@ -83,8 +82,6 @@ class PasswordExpirationMiddleware:
                         messages.WARNING,
                         message
                     )
-
-        response = self.get_response(request)
 
         # Code to be executed for each request/response after
         # the view is called.
