@@ -3,6 +3,13 @@
 from django.db import migrations, models
 
 
+def change_first_login(apps, schema_editor):
+    # We get the model from the versioned app registry;
+    # if we directly import it, it'll be the wrong version
+    PasswordRecord = apps.get_model("django_better_passwords", "PasswordRecord")
+    PasswordRecord.objects.update(first_login=False)
+
+
 class Migration(migrations.Migration):
 
     dependencies = [
@@ -15,4 +22,5 @@ class Migration(migrations.Migration):
             name='first_login',
             field=models.BooleanField(default=True),
         ),
+        migrations.RunPython(change_first_login)
     ]

@@ -12,8 +12,7 @@ def create_password_record(apps, schema_editor):
 
     for user in User.objects.all():
         PasswordRecord.objects.create(
-            user=user, password=user.password,
-            first_login=False)
+            user=user, password=user.password)
 
 
 class Migration(migrations.Migration):
