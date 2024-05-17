@@ -11,8 +11,7 @@ def create_password_record(apps, schema_editor):
     PasswordRecord = apps.get_model("django_better_passwords", "PasswordRecord")
 
     for user in User.objects.all():
-        PasswordRecord.objects.create(user=user, password=user.password,
-                                      first_login=False)
+        PasswordRecord.objects.create(user=user, password=user.password)
 
 
 class Migration(migrations.Migration):
